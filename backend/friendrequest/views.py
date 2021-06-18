@@ -4,6 +4,7 @@ from rest_framework import status
 from friendrequest.serializers.friendrequests import FriendRequestSerializer, AcceptRejectSerializer
 from friendrequest.models import FriendRequest
 from friendrequest.permissions import IsRequester, IsReceiver
+from userprofile.models import UserProfile
 
 
 class NewFriendRequest(CreateAPIView):
