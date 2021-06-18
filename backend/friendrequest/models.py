@@ -4,7 +4,7 @@ from userprofile.models import UserProfile
 
 User = get_user_model()
 
-
+# creating friend requests
 class FriendRequest(models.Model):
     requester = models.ForeignKey(to=UserProfile, on_delete=models.CASCADE, related_name='requester')
     receiver = models.ForeignKey(to=UserProfile, on_delete=models.CASCADE, related_name='receiver')
