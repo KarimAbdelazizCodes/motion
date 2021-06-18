@@ -1,9 +1,19 @@
-# from rest_framework import serializers
-#
-# from registration.models import Registration
-#
-#
-# class RegisterNewUser(serializers.ModelSerializer):
-#     class Meta:
-#         model = Registration
-#         fields =
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+from registration.models import Registration
+
+User = get_user_model()
+
+
+class ValidationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'email',
+            'username',
+            'password',
+            'first_name',
+            'last_name',
+        ]
+
+        read_only_fields = ['email']
