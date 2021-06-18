@@ -53,7 +53,11 @@ class RegistrationValidation(UpdateAPIView):
         code = self.request.data['code']
         password = self.request.data['password']
         password_repeat = self.request.data['password_repeat']
-        reg_profile = Registration.objects.get(user__email=email)
+
+        try:
+            reg_profile = Registration.objects.get(user__email=email)
+        except KeyError:
+            return Response({'error': 'email does not exist in our database'})
 
         if password != password_repeat or code != reg_profile.code:
             return Response(status=status.HTTP_400_BAD_REQUEST)
