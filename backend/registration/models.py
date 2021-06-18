@@ -11,5 +11,5 @@ def code_generator():
 
 
 class Registration(models.Model):
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
-    code_used = models.CharField(max_length=5, default=code_generator)
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE, primary_key=True)
+    code = models.CharField(max_length=5, default=code_generator)
