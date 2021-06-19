@@ -14,6 +14,7 @@ class UserFollowStatus(serializers.ModelSerializer):
         model = UserProfile
         fields = '__all__'
 
+
 class ListFollowersSerializer(serializers.ModelSerializer):
     followers = UserFollowStatus(many=True)
 

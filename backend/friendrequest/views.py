@@ -1,5 +1,6 @@
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, DestroyAPIView, UpdateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView, UpdateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, \
+    RetrieveUpdateAPIView
 from rest_framework import status
 from friendrequest.serializers.friendrequests import FriendRequestSerializer, AcceptRejectSerializer
 from friendrequest.models import FriendRequest
@@ -28,7 +29,7 @@ class CancelFriendRequest(DestroyAPIView):
     permission_classes = [IsRequester]
 
 
-class AcceptRejectFriendRequest(UpdateAPIView):
+class GetAcceptRejectFriendrequest(RetrieveUpdateAPIView):
     queryset = FriendRequest.objects.all()
     serializer_class = AcceptRejectSerializer
     permission_classes = [IsReceiver]
