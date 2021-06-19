@@ -7,21 +7,14 @@ User = get_user_model()
 class ToggleFollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            'id',
-            'username',
-            'followers'
-        ]
+        fields = '__all__'
 
 
 # this is just to be imported in the ListFollowersSerializer and ListFollowingSerializer
 class UserFollowStatus(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            'id',
-            'username'
-        ]
+        fields = '__all__'
 
 
 class ListFollowersSerializer(serializers.ModelSerializer):
@@ -29,9 +22,7 @@ class ListFollowersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = [
-            'followers',
-        ]
+        fields = '__all__'
 
 
 class ListFollowingSerializer(serializers.ModelSerializer):
@@ -39,6 +30,4 @@ class ListFollowingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = [
-            'following'
-        ]
+        fields = '__all__'

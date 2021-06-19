@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     # Models
     'user',
     'post',
-    'userprofile',
     'registration',
     'friendrequest'
 ]

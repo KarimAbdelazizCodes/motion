@@ -14,7 +14,7 @@ urlpatterns = [
     path('backend/admin/', admin.site.urls),
     path('backend/api/auth/token/', include(jwt_views)),
     path('backend/api/', include('post.urls')),
-    path('backend/api/', include('userprofile.urls')),
+    path('backend/api/', include('user.urls')),
     path('backend/api/', include('registration.urls')),
     path('backend/api/', include('friendrequest.urls'))
 ]

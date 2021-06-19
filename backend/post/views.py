@@ -30,7 +30,7 @@ class ListFollowingUsersPostView(ListAPIView):
     serializer_class = PostsReadSerializer
 
     def get_queryset(self):
-        users = self.request.user.userprofile.following.all()
+        users = self.request.user.following.all()
         return Post.objects.filter(author__in=users).order_by("-created")
 
 

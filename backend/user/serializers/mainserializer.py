@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-
 class MainUserSerializer(serializers.ModelSerializer):
 
     number_of_followers = serializers.SerializerMethodField()
@@ -13,19 +12,38 @@ class MainUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        fields = '__all__'
+
+
+class FriendsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
         fields = [
-            'id',
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'number_of_followers',
-            'followers'
+            'friends'
         ]
 
 
-class UserProfileSerializer(serializers.ModelSerializer):
+class UserProfileMainSerializer(serializers.ModelSerializer):
+    user = User
 
     class Meta:
         model = User
-        exclude = ['password']
+        fields = [
+            "user",
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "about",
+            "created",
+            "updated",
+            "following",
+            "friends"
+        ]
+
+
+class UpdateUserProfileMainSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = '__all__'
