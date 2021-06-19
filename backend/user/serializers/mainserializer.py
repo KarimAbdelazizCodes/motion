@@ -7,11 +7,12 @@ User = get_user_model()
 class MainUserSerializer(serializers.ModelSerializer):
 
     number_of_followers = serializers.SerializerMethodField()
+
     def get_number_of_followers(self, obj):
         return obj.followers.count()
 
     class Meta:
-        model = get_user_model()
+        model = User
         fields = [
             'id',
             'username',
@@ -22,3 +23,9 @@ class MainUserSerializer(serializers.ModelSerializer):
             'followers'
         ]
 
+
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        exclude = ['password']

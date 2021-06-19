@@ -3,7 +3,7 @@ from rest_framework.generics import UpdateAPIView, ListAPIView
 from userprofile.models import UserProfile
 from rest_framework.response import Response
 from userprofile.serializers.followers import ToggleFollowSerializer, ListFollowersSerializer, ListFollowingSerializer
-from userprofile.serializers.mainserializer import MainUserSerializer, FriendsSerializer
+from userprofile.serializers.mainserializer import MainUserSerializer, FriendsSerializer, UpdateUserProfileMainSerializer, UserProfileMainSerializer
 
 
 class ToggleUserFollow(UpdateAPIView):
@@ -56,3 +56,16 @@ class ListUserView(ListAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = MainUserSerializer
 
+
+# class ListLoggedInUserProfile(ListAPIView):
+#     serializer_class = UserProfileMainSerializer
+#
+#     def get_queryset(self):
+#         return UserProfile.objects.filter(user=self.request.user)
+
+
+class UpdateLoggedInUserProfile(UpdateAPIView):
+    serializer_class = UpdateUserProfileMainSerializer
+
+    def get_object(self):
+        return UserProfile.objects.filter(user=self.request.user)

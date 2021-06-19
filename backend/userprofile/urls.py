@@ -1,6 +1,7 @@
 from django.urls import path
 from userprofile.views import ToggleUserFollow, ListUserFollowers, ListFollowingUser, ListUserView, \
-    ListUserFriends
+    ListUserFriends, UpdateLoggedInUserProfile
+# ListLoggedInUserProfile
 
 urlpatterns = [
     path('social/followers/toggle-follow/<int:pk>/', ToggleUserFollow.as_view()),
@@ -8,4 +9,6 @@ urlpatterns = [
     path('social/followers/following/', ListFollowingUser.as_view()),
     path('social/friends/', ListUserFriends.as_view()),
     path('users/', ListUserView.as_view()),
+    # path('users/me/', ListLoggedInUserProfile.as_view()),
+    path('users/me/', UpdateLoggedInUserProfile.as_view())
 ]
