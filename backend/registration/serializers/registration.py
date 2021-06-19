@@ -17,3 +17,13 @@ class ValidationSerializer(serializers.ModelSerializer):
         ]
 
         read_only_fields = ['email']
+
+
+class PasswordValidation(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'email',
+            'password'
+        ]
+        read_only_fields = ['email']
