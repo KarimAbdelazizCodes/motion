@@ -43,8 +43,9 @@ class PasswordReset(CreateAPIView):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        try:
-            email = self.request.data['email']
+        email = self.request.data['email']
+        # First ensure that the user does have a registration record in our DB
+        if Registration.objects.filter(user_id__email=email):
             instance = Registration.objects.get(user_id__email=email)
             # password_reset is a model method that generates a new number in case of password reset
             instance.password_reset()
@@ -59,8 +60,7 @@ class PasswordReset(CreateAPIView):
             )
 
             return Response(status=status.HTTP_200_OK)
-
-        except KeyError:
+        else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -74,7 +74,7 @@ class Validation(UpdateAPIView):
         email = self.request.data['email']
         reg_profile = Registration.objects.get(user_id__email=email)
 
-        # instance definition below matches User profile with Registration profile based on ID number
+        # instance definition below matches User profile with Registration profile based on Primary Key
         instance = User.objects.get(id=reg_profile.user_id)
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
