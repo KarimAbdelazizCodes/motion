@@ -8,6 +8,7 @@ class IsRequester(BasePermission):
         else:
             return False
 
+
 class IsReceiver(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.id == obj.receiver.id:

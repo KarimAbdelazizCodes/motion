@@ -2,10 +2,12 @@ from rest_framework import status
 from rest_framework.generics import UpdateAPIView, ListAPIView, RetrieveUpdateAPIView
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
-from user.serializers.followers import ToggleFollowSerializer, ListFollowersSerializer, ListFollowingSerializer
-from user.serializers.mainserializer import MainUserSerializer, FriendsSerializer, UpdateUserProfileMainSerializer, UserProfileMainSerializer
+from user.serializers.followers import ListFollowersSerializer, ListFollowingSerializer
+from user.serializers.mainserializer import MainUserSerializer, FriendsSerializer, UpdateUserProfileMainSerializer,\
+    UserProfileMainSerializer
 
 User = get_user_model()
+
 
 class ToggleUserFollow(UpdateAPIView):
     queryset = User.objects.all()
@@ -56,13 +58,6 @@ class ListFollowingUser(ListAPIView):
 class ListUserView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = MainUserSerializer
-
-
-# class ListLoggedInUserProfile(ListAPIView):
-#     serializer_class = UserProfileMainSerializer
-#
-#     def get_queryset(self):
-#         return UserProfile.objects.filter(user=self.request.user)
 
 
 class UpdateLoggedInUserProfile(RetrieveUpdateAPIView):

@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class MainUserSerializer(serializers.ModelSerializer):
 
     number_of_followers = serializers.SerializerMethodField()

@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, DestroyAPIView, UpdateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, \
+from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView, \
     RetrieveUpdateAPIView
 from rest_framework import status
 from friendrequest.serializers.friendrequests import FriendRequestSerializer, AcceptRejectSerializer
@@ -43,4 +43,3 @@ class ListPendingFriendRequests(ListAPIView):
 
     def get_queryset(self):
         return FriendRequest.objects.filter(receiver=self.request.user.id, status="P")
-
