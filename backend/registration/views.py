@@ -39,23 +39,6 @@ class RegisterNewUser(CreateAPIView):
             return Response({'email': 'this field is required'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RegistrationValidation(UpdateAPIView):
-    permission_classes = [AllowAny]
-    serializer_class = ValidationSerializer
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', True)
-        email = self.request.data['email']
-        reg_profile = Registration.objects.get(user_id__email=email)
-
-        # instance definition below matches User profile with Registration profile based on ID number
-        instance = User.objects.get(id=reg_profile.user_id)
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(status=status.HTTP_200_OK)
-
-
 class PasswordReset(CreateAPIView):
     permission_classes = [AllowAny]
 
@@ -81,14 +64,15 @@ class PasswordReset(CreateAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class PasswordResetValidation(UpdateAPIView):
+# This works for both new user registration and password reset
+class Validation(UpdateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ValidationSerializer
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', True)
         email = self.request.data['email']
-        reg_profile = Registration.objects.get(user__email=email)
+        reg_profile = Registration.objects.get(user_id__email=email)
 
         # instance definition below matches User profile with Registration profile based on ID number
         instance = User.objects.get(id=reg_profile.user_id)
@@ -96,4 +80,3 @@ class PasswordResetValidation(UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(status=status.HTTP_200_OK)
-
