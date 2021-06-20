@@ -9,6 +9,5 @@ urlpatterns = [
     path('social/followers/following/', ListFollowingUser.as_view()),
     path('social/friends/', ListUserFriends.as_view()),
     path('users/', ListUserView.as_view()),
-    # path('users/me/', ListLoggedInUserProfile.as_view()),
     path('users/me/', UpdateLoggedInUserProfile.as_view())
 ]
