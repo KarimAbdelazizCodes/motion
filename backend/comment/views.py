@@ -1,11 +1,8 @@
-from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
-
 from comment.models import Comment
 from comment.serializers import NewCommentSerializer
-from post.models import Post
 
 
 class ListCreateComment(ListCreateAPIView):
@@ -23,4 +20,3 @@ class ListCreateComment(ListCreateAPIView):
         queryset = Comment.objects.filter(post_id=self.kwargs['pk'])
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
