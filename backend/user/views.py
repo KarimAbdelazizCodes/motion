@@ -71,3 +71,20 @@ class UpdateLoggedInUserProfile(RetrieveUpdateAPIView):
 class UserSpecificProfile(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = MainUserSerializer
+
+
+class RemoveFriend(UpdateAPIView):
+    def update(self, request, *args, **kwargs):
+        user_id = self.request.user.id
+        friend = self.kwargs['pk']
+
+        # basic logic to avoid unexepcted accidents - user can't unfriend themselves
+        if user_id == friend:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # User can't unfriend someone they're not friends with
+        elif friend not in User.objects.get(id=user_id).friends.all():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            instance = User.objects.get(id=user_id)
+            instance.friends.remove(friend)
+            return Response(status=status.HTTP_200_OK)
