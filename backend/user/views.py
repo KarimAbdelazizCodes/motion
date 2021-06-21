@@ -3,8 +3,7 @@ from rest_framework.generics import UpdateAPIView, ListAPIView, RetrieveUpdateAP
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from user.serializers.followers import ListFollowersSerializer, ListFollowingSerializer
-from user.serializers.mainserializer import MainUserSerializer, FriendsSerializer, UpdateUserProfileMainSerializer,\
-    UserProfileMainSerializer
+from user.serializers.mainserializer import MainUserSerializer, FriendsSerializer, RetrieveUpdateUserProfileSerializer
 
 User = get_user_model()
 
@@ -61,7 +60,7 @@ class ListUserView(ListAPIView):
 
 
 class UpdateLoggedInUserProfile(RetrieveUpdateAPIView):
-    serializer_class = UpdateUserProfileMainSerializer
+    serializer_class = RetrieveUpdateUserProfileSerializer
 
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
