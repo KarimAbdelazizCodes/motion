@@ -17,7 +17,7 @@ urlpatterns = [
     path('backend/api/', include('user.urls')),
     path('backend/api/', include('registration.urls')),
     path('backend/api/', include('friendrequest.urls'))
-]
+] # + static(settings.MEDIA_URL, document_root=settings.MEDAI_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
