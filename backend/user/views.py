@@ -19,13 +19,16 @@ class ToggleUserFollow(UpdateAPIView):
         follower = self.request.user
 
         if self.request.user.id == user.id:
-            return Response({'error': 'You cannot follow yourself'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'You cannot follow yourself'},
+                            status=status.HTTP_400_BAD_REQUEST)
         if follower in user.followers.all():
             user.followers.remove(follower)
-            return Response({'Success': f'User {user.id} unfollowed'}, status=status.HTTP_200_OK)
+            return Response({'Success': f'User {user.id} unfollowed'},
+                            status=status.HTTP_200_OK)
         else:
             user.followers.add(follower)
-            return Response({'Success': f'User {user.id} followed'}, status=status.HTTP_200_OK)
+            return Response({'Success': f'User {user.id} followed'},
+                            status=status.HTTP_200_OK)
 
 
 class ListUserFriends(ListAPIView):
