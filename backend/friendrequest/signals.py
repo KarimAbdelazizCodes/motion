@@ -13,5 +13,3 @@ def add_to_friends(sender, instance, created, **kwargs):
         receiver.friends.add(requester)
         requester.save()
         receiver.save()
-    elif instance.status == 'R':
-        instance.delete()

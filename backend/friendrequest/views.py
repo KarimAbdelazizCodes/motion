@@ -1,11 +1,11 @@
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView, \
-    RetrieveUpdateAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
 from friendrequest.serializers.friendrequests import FriendRequestSerializer, AcceptRejectSerializer
 from friendrequest.models import FriendRequest
-from friendrequest.permissions import IsRequester, IsReceiver
+from friendrequest.permissions import FriendRequestPermissions
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -25,16 +25,10 @@ class NewFriendRequest(CreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-# can only be done by the requester
-class CancelFriendRequest(DestroyAPIView):
-    queryset = FriendRequest.objects.all()
-    permission_classes = [IsRequester]
-
-
-class GetAcceptRejectFriendrequest(RetrieveUpdateAPIView):
+class GetAcceptRejectFriendrequest(RetrieveUpdateDestroyAPIView):
     queryset = FriendRequest.objects.all()
     serializer_class = AcceptRejectSerializer
-    permission_classes = [IsReceiver]
+    permission_classes = [FriendRequestPermissions]
 
 
 # list requests that are pending approval or rejection
@@ -42,4 +36,5 @@ class ListPendingFriendRequests(ListAPIView):
     serializer_class = FriendRequestSerializer
 
     def get_queryset(self):
-        return FriendRequest.objects.filter(receiver=self.request.user.id, status="P")
+        user = self.request.user.id
+        return FriendRequest.objects.filter(Q(receiver=user) | Q(requester=user), status="P")
