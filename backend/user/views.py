@@ -1,5 +1,5 @@
 from rest_framework import status, filters
-from rest_framework.generics import UpdateAPIView, ListAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import UpdateAPIView, ListAPIView, RetrieveUpdateAPIView, RetrieveAPIView
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from user.serializers.followers import ListFollowersSerializer, ListFollowingSerializer
@@ -58,7 +58,7 @@ class ListUserView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = MainUserSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['username', 'first_name', 'last_name']
+    search_fields = ['username']
 
 
 class UpdateLoggedInUserProfile(RetrieveUpdateAPIView):
@@ -66,3 +66,8 @@ class UpdateLoggedInUserProfile(RetrieveUpdateAPIView):
 
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
+
+
+class UserSpecificProfile(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = MainUserSerializer
