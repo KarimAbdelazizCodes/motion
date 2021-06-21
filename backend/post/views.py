@@ -1,5 +1,5 @@
 from django.db.models import Q
-from rest_framework import status
+from rest_framework import status, filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from post.models import Post
@@ -12,6 +12,8 @@ from rest_framework.response import Response
 class ListCreatePostsView(ListCreateAPIView):
     queryset = Post.objects.all().order_by('-created')
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['content', 'author__first_name', 'author__last_name']
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -36,7 +38,6 @@ class ListFollowingUsersPostView(ListAPIView):
     def get_queryset(self):
         users = self.request.user.following.all()
         return Post.objects.filter(author__in=users).order_by("-created")
-
 
 
 # List posts from friends of logged in user
@@ -66,7 +67,8 @@ class ToggleLikes(UpdateAPIView):
         user = self.request.user
 
         if user.id == post.author.id:
-            return Response({'error': 'cannot like own post'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'cannot like own post'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if user in post.liked_by.all():
             post.liked_by.remove(user)
@@ -85,16 +87,3 @@ class ListUserLikedPostsView(ListAPIView):
         return Post.objects.filter(id__in=liked).order_by("-created")
 
 
-# Search all posts based on search terms in url
-class SearchPostsView(ListAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostsReadSerializer
-
-    def get(self, request, *args, **kwargs):
-        search = kwargs.get('search_string')
-        queryset = self.get_queryset().filter(Q(content__icontains=search)
-                                              | Q(author__first_name__icontains=search)
-                                              | Q(author__last_name__icontains=search))\
-            .order_by('-created')
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
