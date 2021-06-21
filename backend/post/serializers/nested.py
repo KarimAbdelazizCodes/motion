@@ -5,10 +5,14 @@ from user.models import User
 
 
 class UserNestedSerializer(serializers.ModelSerializer):
+    # logged_in_user_is_following = serializers.SerializerMethodField()
+    # logged_in_user_is_friends = serializers.SerializerMethodField()
+    # logged_in_user_is_rejected = serializers.SerializerMethodField()
+
 
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ['id', 'email', 'first_name', 'last_name', 'username', 'about']
 
 
 class ToggleLikesSerializer(serializers.ModelSerializer):
@@ -17,3 +21,4 @@ class ToggleLikesSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'liked_by']
         read_only = ['id']
+
