@@ -13,10 +13,11 @@ class User(AbstractUser):
                                          "From 9 up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
     location = models.CharField(max_length=50, blank=True)
-    # profile_image = models.ImageField(upload_to='profile_image', blank=True)
+    # avatar = models.ImageField(upload_to='profile_image', blank=True)
     hobbies = models.JSONField(blank=True, default=list)
     following = models.ManyToManyField('self', blank=True, related_name='followers', symmetrical=False)
     friends = models.ManyToManyField('self', related_name='friends', blank=True)
+    job = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.username
