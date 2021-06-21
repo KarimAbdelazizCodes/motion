@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from projectsettings.settings import DEFAULT_FROM_EMAIL
-from .serializers.registration import ValidationSerializer, PasswordValidation
+from .serializers.registration import ValidationSerializer
 
 User = get_user_model()
 
@@ -39,39 +39,13 @@ class RegisterNewUser(CreateAPIView):
             return Response({'email': 'this field is required'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RegistrationValidation(UpdateAPIView):
-    permission_classes = [AllowAny]
-    serializer_class = ValidationSerializer
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', True)
-
-        try:
-            email = self.request.data['email']
-            code = self.request.data['code']
-            password = self.request.data['password']
-            password_repeat = self.request.data['password_repeat']
-            reg_profile = Registration.objects.get(user_id__email=email)
-
-            if password != password_repeat or code != reg_profile.code:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            else:
-                instance = User.objects.get(id=reg_profile.user_id)
-                serializer = self.get_serializer(instance, data=request.data, partial=partial)
-                serializer.is_valid(raise_exception=True)
-                self.perform_update(serializer)
-                return Response(status=status.HTTP_200_OK)
-
-        except KeyError:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 class PasswordReset(CreateAPIView):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        try:
-            email = self.request.data['email']
+        email = self.request.data['email']
+        # First ensure that the user does have a registration record in our DB
+        if Registration.objects.filter(user_id__email=email):
             instance = Registration.objects.get(user_id__email=email)
             # password_reset is a model method that generates a new number in case of password reset
             instance.password_reset()
@@ -86,33 +60,23 @@ class PasswordReset(CreateAPIView):
             )
 
             return Response(status=status.HTTP_200_OK)
-
-        except KeyError:
+        else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class PasswordResetValidation(UpdateAPIView):
+# This works for both new user registration and password reset
+class Validation(UpdateAPIView):
     permission_classes = [AllowAny]
-    serializer_class = PasswordValidation
+    serializer_class = ValidationSerializer
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', True)
+        email = self.request.data['email']
+        reg_profile = Registration.objects.get(user_id__email=email)
 
-        try:
-            email = self.request.data['email']
-            code = self.request.data['code']
-            password = self.request.data['password']
-            password_repeat = self.request.data['password_repeat']
-            reg_profile = Registration.objects.get(user__email=email)
-
-            if password != password_repeat or code != reg_profile.code:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            else:
-                instance = User.objects.get(id=reg_profile.user_id)
-                serializer = self.get_serializer(instance, data=request.data, partial=partial)
-                serializer.is_valid(raise_exception=True)
-                self.perform_update(serializer)
-                return Response(status=status.HTTP_200_OK)
-
-        except KeyError:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # instance definition below matches User profile with Registration profile based on Primary Key
+        instance = User.objects.get(id=reg_profile.user_id)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(status=status.HTTP_200_OK)
