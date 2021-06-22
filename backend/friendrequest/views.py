@@ -6,6 +6,8 @@ from friendrequest.models import FriendRequest
 from friendrequest.permissions import FriendRequestPermissions
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.core.mail import EmailMultiAlternatives
+from projectsettings.settings import DEFAULT_FROM_EMAIL
 
 User = get_user_model()
 
@@ -43,6 +45,14 @@ class NewFriendRequest(CreateAPIView):
             serializer = self.get_serializer(data=self.request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save(requester=requester, receiver=receiver)
+
+            subject, from_email, to = f'{requester.first_name} {requester.last_name} wants to be your friend!',\
+                                      DEFAULT_FROM_EMAIL, receiver.email
+            html_content = f'<p>You have a new friend request from {requester.first_name} {requester.last_name}.\n' \
+                           f'<a href="https://krab-motion.propulsion-learn.ch/"> Click here to respond!</a>'
+            msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
