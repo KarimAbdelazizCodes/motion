@@ -2,7 +2,8 @@ from rest_framework import status, filters
 from rest_framework.generics import UpdateAPIView, ListAPIView, RetrieveUpdateAPIView, RetrieveAPIView
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
-from user.serializers.followers import ListFollowersSerializer, ListFollowingSerializer
+from user.serializers.followers import ListFollowersSerializer, ListFollowingSerializer, ListFriendsSerializer, \
+    NestedUserSerializer
 from user.serializers.mainserializer import MainUserSerializer, FriendsSerializer, RetrieveUpdateUserProfileSerializer
 
 User = get_user_model()
@@ -29,7 +30,7 @@ class ToggleUserFollow(UpdateAPIView):
 
 
 class ListUserFriends(ListAPIView):
-    serializer_class = FriendsSerializer
+    serializer_class = ListFriendsSerializer
 
     def list(self, request, *args, **kwargs):
         instance = User.objects.get(id=self.request.user.id)
@@ -45,7 +46,7 @@ class ListUserFollowers(ListAPIView):
         return Response(serializer.data)
 
 
-class ListFollowingUser(ListAPIView):
+class ListFollowing(ListAPIView):
     serializer_class = ListFollowingSerializer
 
     def list(self, request, *args, **kwargs):
@@ -56,7 +57,7 @@ class ListFollowingUser(ListAPIView):
 
 class ListUserView(ListAPIView):
     queryset = User.objects.all()
-    serializer_class = MainUserSerializer
+    serializer_class = NestedUserSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['username']
 
@@ -71,3 +72,20 @@ class UpdateLoggedInUserProfile(RetrieveUpdateAPIView):
 class UserSpecificProfile(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = MainUserSerializer
+
+
+class RemoveFriend(UpdateAPIView):
+    def update(self, request, *args, **kwargs):
+        user_id = self.request.user.id
+        friend = self.kwargs['pk']
+
+        # basic logic to avoid unexepcted accidents - user can't unfriend themselves
+        if user_id == friend:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # User can't unfriend someone they're not friends with
+        elif friend not in User.objects.get(id=user_id).friends.all():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            instance = User.objects.get(id=user_id)
+            instance.friends.remove(friend)
+            return Response(status=status.HTTP_200_OK)
