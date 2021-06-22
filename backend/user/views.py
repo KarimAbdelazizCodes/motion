@@ -3,9 +3,6 @@ from rest_framework.generics import UpdateAPIView, ListAPIView, RetrieveUpdateAP
 from django.contrib.auth import get_user_model
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from user.serializers.followers import ListFollowersSerializer, ListFollowingSerializer, ListFriendsSerializer, \
-    NestedUserSerializer
-from user.serializers.mainserializer import MainUserSerializer, FriendsSerializer, RetrieveUpdateUserProfileSerializer
 from django.core.mail import EmailMultiAlternatives
 from projectsettings.settings import DEFAULT_FROM_EMAIL
 from user.serializers.mainserializer import MainUserSerializer
