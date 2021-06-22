@@ -20,11 +20,7 @@ class FriendRequestSerializer(serializers.ModelSerializer):
 class AcceptRejectSerializer(serializers.ModelSerializer):
     class Meta:
         model = FriendRequest
-        fields = [
-            'requester',
-            'receiver',
-            'status'
-        ]
+        fields = '__all__'
         read_only_fields = [
             'requester',
             'receiver'

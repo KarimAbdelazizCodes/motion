@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class MainUserSerializer(serializers.ModelSerializer):
 
     number_of_followers = serializers.SerializerMethodField()
@@ -54,6 +55,7 @@ class RetrieveUpdateUserProfileSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "about",
+            "job",
             "phone_number",
             "location",
             "hobbies",
