@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from user.serializers.followers import ListFollowersSerializer, ListFollowingSerializer, ListFriendsSerializer, \
     NestedUserSerializer
 from user.serializers.mainserializer import MainUserSerializer, FriendsSerializer, RetrieveUpdateUserProfileSerializer
+from django.core.mail import EmailMultiAlternatives
+from projectsettings.settings import DEFAULT_FROM_EMAIL
 
 User = get_user_model()
 
@@ -26,6 +28,17 @@ class ToggleUserFollow(UpdateAPIView):
             return Response({'Success': f'User {user.id} unfollowed'}, status=status.HTTP_200_OK)
         else:
             user.followers.add(follower)
+
+            subject, from_email, to = 'You have a new follower!', DEFAULT_FROM_EMAIL, user.email
+            if follower in user.following.all():
+                html_content = f'<p>{follower.first_name} {follower.last_name} is now following you'
+            else:
+                html_content = f'<p>{follower.first_name} {follower.last_name} is now following you!\n' \
+                               f'<a href="https://krab-motion.propulsion-learn.ch/">' \
+                               f'\nClick here to follow {follower.first_name} back!</a>'
+            msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
+            msg.send()
+
             return Response({'Success': f'User {user.id} followed'}, status=status.HTTP_200_OK)
 
 
