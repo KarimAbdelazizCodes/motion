@@ -1,15 +1,13 @@
 from rest_framework import serializers
-
 from post.models import Post
-from post.serializers.nested import UserNestedSerializer
 
 
 #  Used in any action requiring rewriting post content
-from user.serializers.mainserializer import RetrieveUpdateUserProfileSerializer
+from user.serializers.mainserializer import MainUserSerializer
 
 
 class PostsWriteSerializer(serializers.ModelSerializer):
-    author = UserNestedSerializer(read_only=True)
+    author = MainUserSerializer(read_only=True)
 
     class Meta:
         model = Post
@@ -19,10 +17,14 @@ class PostsWriteSerializer(serializers.ModelSerializer):
 
 #  Used in any action requiring the reading of post content
 class PostsReadSerializer(serializers.ModelSerializer):
-    author = UserNestedSerializer()
+    author = MainUserSerializer()
+    amount_of_comments = serializers.SerializerMethodField()
     amount_of_likes = serializers.SerializerMethodField()
     is_from_logged_in_user = serializers.SerializerMethodField()
     logged_in_user_liked = serializers.SerializerMethodField()
+
+    def get_amount_of_comments(self, obj):
+        return obj.comment_set.count()
 
     def get_amount_of_likes(self, obj):
         return obj.liked_by.count()
@@ -37,4 +39,3 @@ class PostsReadSerializer(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
         read_only = ['id', 'created', 'updated', 'author', 'liked_by']
-

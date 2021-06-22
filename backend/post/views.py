@@ -1,6 +1,7 @@
 from django.db.models import Q
 from rest_framework import status, filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, UpdateAPIView
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from post.models import Post
 from post.permissions import IsAuthorOrSuperuserOrReadOnly
@@ -10,6 +11,7 @@ from rest_framework.response import Response
 
 # List all posts, create a post
 class ListCreatePostsView(ListCreateAPIView):
+    pagination_class = LimitOffsetPagination
     queryset = Post.objects.all().order_by('-created')
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter]
@@ -34,6 +36,7 @@ class RetrieveUpdateDestroyPostsView(RetrieveUpdateDestroyAPIView):
 # List posts from users the logged in user is following
 class ListFollowingUsersPostView(ListAPIView):
     serializer_class = PostsReadSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         users = self.request.user.following.all()
@@ -43,6 +46,7 @@ class ListFollowingUsersPostView(ListAPIView):
 # List posts from friends of logged in user
 class ListFriendsPostsView(ListAPIView):
     serializer_class = PostsReadSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         users = self.request.user.friends.all()
@@ -81,6 +85,7 @@ class ToggleLikes(UpdateAPIView):
 # List all posts the logged in user liked
 class ListUserLikedPostsView(ListAPIView):
     serializer_class = PostsReadSerializer
+    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         liked = self.request.user.liked_posts.all()
