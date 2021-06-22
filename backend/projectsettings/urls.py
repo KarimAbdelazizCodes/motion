@@ -9,9 +9,9 @@ from rest_framework_simplejwt import views as jwt_views
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Django API",
+      title="Motion API Documentation",
       default_version='v1',
-      description="Description of your Django App",
+      description="Team 3: Robert, Alex, Bolor, and Karim - all endpoints must be prepended with backend/api/",
       terms_of_service="https://www.google.com/policies/terms/",
       contact=openapi.Contact(email="learn@propulsionacademy.com"),
       license=openapi.License(name="BSD License"),
