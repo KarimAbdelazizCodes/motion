@@ -47,7 +47,7 @@ class NewFriendRequest(CreateAPIView):
             serializer.save(requester=requester, receiver=receiver)
 
             subject, from_email, to = f'{requester.first_name} {requester.last_name} wants to be your friend!',\
-                                      DEFAULT_FROM_EMAIL, user.email
+                                      DEFAULT_FROM_EMAIL, receiver.email
             html_content = f'<p>You have a new friend request from {requester.first_name} {requester.last_name}' \
                            f'<a href="https://krab-motion.propulsion-learn.ch/">Click here to respond!</a>'
             msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
