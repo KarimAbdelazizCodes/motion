@@ -1,9 +1,13 @@
 from rest_framework import status, filters
-from rest_framework.generics import UpdateAPIView, ListAPIView, RetrieveUpdateAPIView, \
-    RetrieveAPIView
+from rest_framework.generics import UpdateAPIView, ListAPIView, RetrieveUpdateAPIView, RetrieveAPIView
 from django.contrib.auth import get_user_model
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
+from user.serializers.followers import ListFollowersSerializer, ListFollowingSerializer, ListFriendsSerializer, \
+    NestedUserSerializer
+from user.serializers.mainserializer import MainUserSerializer, FriendsSerializer, RetrieveUpdateUserProfileSerializer
+from django.core.mail import EmailMultiAlternatives
+from projectsettings.settings import DEFAULT_FROM_EMAIL
 from user.serializers.mainserializer import MainUserSerializer
 
 User = get_user_model()
@@ -64,16 +68,24 @@ class ToggleUserFollow(UpdateAPIView):
         follower = self.request.user
 
         if self.request.user.id == user.id:
-            return Response({'error': 'You cannot follow yourself'},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'You cannot follow yourself'}, status=status.HTTP_400_BAD_REQUEST)
         if follower in user.followers.all():
             user.followers.remove(follower)
-            return Response({'Success': f'User {user.id} unfollowed'},
-                            status=status.HTTP_200_OK)
+            return Response({'Success': f'User {user.id} unfollowed'}, status=status.HTTP_200_OK)
         else:
             user.followers.add(follower)
-            return Response({'Success': f'User {user.id} followed'},
-                            status=status.HTTP_200_OK)
+
+            subject, from_email, to = 'You have a new follower!', DEFAULT_FROM_EMAIL, user.email
+            if follower in user.following.all():
+                html_content = f'<p>{follower.first_name} {follower.last_name} is now following you'
+            else:
+                html_content = f'<p>{follower.first_name} {follower.last_name} is now following you!\n' \
+                               f'<a href="https://krab-motion.propulsion-learn.ch/">' \
+                               f'\nClick here to follow {follower.first_name} back!</a>'
+            msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
+            msg.send()
+
+            return Response({'Success': f'User {user.id} followed'}, status=status.HTTP_200_OK)
 
 
 class RemoveFriend(UpdateAPIView):
