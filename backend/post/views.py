@@ -6,6 +6,7 @@ from post.models import Post
 from post.permissions import IsAuthorOrSuperuserOrReadOnly
 from post.serializers.main import PostsWriteSerializer, PostsReadSerializer
 from rest_framework.response import Response
+from .models import Image
 
 
 class ListCreatePostsView(ListCreateAPIView):
@@ -42,7 +43,9 @@ class ListCreatePostsView(ListCreateAPIView):
         return PostsReadSerializer
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        instance = serializer.save(author=self.request.user)
+        for img in self.request.FILES.getlist('images'):
+            Image.objects.create(image=img, post=instance)
 
 
 class RetrieveUpdateDestroyPostsView(RetrieveUpdateDestroyAPIView):
