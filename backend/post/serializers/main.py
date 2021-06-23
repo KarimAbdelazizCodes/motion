@@ -53,7 +53,7 @@ class PostsReadSerializer(serializers.ModelSerializer):
             'amount_of_likes',
             'is_from_logged_in_user',
             'logged_in_user_liked',
-            'images'
+            'images',
             'content',
             'created',
             'updated',
