@@ -5,16 +5,17 @@ import share from '../../../assets/posts/share.svg';
 import menu from '../../../assets/posts/menu.svg';
 import TimeAgo from 'react-timeago';
 import Axios from '../../../Axios';
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import EditPost from '../postcontainer/editpost'
 import { useDispatch } from 'react-redux'
+import img from '../../../assets/img.png';
+import Comments from '../postcontainer/comments'
 
 
 const Post = props => {
     const dispatch = useDispatch();
-    // destructuring post
+    // destructuring post prop
     const { author, images, amount_of_likes, content, created,  logged_in_user_liked, is_from_logged_in_user, id } = props.post;
-
     const [editToggle, setEditToggle] = useState(false)
     const [totalLikes, setTotalLikes] = useState(amount_of_likes)
     const [userLikes, setUserLikes] = useState(logged_in_user_liked)
@@ -25,7 +26,7 @@ const Post = props => {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         };
         try {
-            const response = await Axios.post(url, null, config);
+            const response = await Axios.patch(url, null, config);
             console.log(response);
             userLikes ? setTotalLikes(totalLikes-1) : setTotalLikes(totalLikes+1);
             setUserLikes(!userLikes)
@@ -97,6 +98,7 @@ const Post = props => {
                     </span>
                 </div>
             </div>
+            <Comments id={id}/>
         </PostWrapper>
     );
 };

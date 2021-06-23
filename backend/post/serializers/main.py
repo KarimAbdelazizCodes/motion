@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from comment.models import Comment
 from post.models import Post
 from post.models import Image
 
@@ -7,11 +9,11 @@ from post.models import Image
 from user.serializers.mainserializer import MainUserSerializer
 
 
+# Used as a nested serializer for when posts are fetched
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ['image']
-
 
 class PostsWriteSerializer(serializers.ModelSerializer):
     author = MainUserSerializer(read_only=True)
@@ -42,7 +44,7 @@ class PostsReadSerializer(serializers.ModelSerializer):
         return self.context["request"].user == obj.author
 
     def get_logged_in_user_liked(self, obj):
-        return self.context["request"].user.id in obj.liked_by.core_filters
+        return self.context["request"].user in obj.liked_by.all()
 
     class Meta:
         model = Post
