@@ -10,6 +10,15 @@ export const fetchPosts = async dispatch => {
     dispatch(f.postList(response.data.results));
 };
 
+export const fetchUserProfileData = async dispatch => {
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    };
+    const url = 'users/me/';
+    const response = await Axios.get(url, config);
+    dispatch(f.userData(response.data));
+};
+
 // fetch user information as well as user posts
 export const fetchUserdata = async dispatch => {
     const config = {
@@ -85,4 +94,3 @@ export const fetchFollowed = async dispatch => {
         console.log(e);
     }
 };
-
