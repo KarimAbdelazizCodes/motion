@@ -1,4 +1,3 @@
-from django.db.models import Q
 from rest_framework import status, filters
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, UpdateAPIView
 from rest_framework.pagination import LimitOffsetPagination
@@ -9,8 +8,28 @@ from post.serializers.main import PostsWriteSerializer, PostsReadSerializer
 from rest_framework.response import Response
 
 
-# List all posts, create a post
 class ListCreatePostsView(ListCreateAPIView):
+    """
+        post:
+        Create a Post
+
+        Body must contain:
+        - content (text)
+
+        get:
+        List all / searches posts
+
+        Use-case:
+        - Base-URL: returns all posts, with optional pagination
+            - for pagination, you must include limit and offset parameters in url
+
+        - Search-URL: Searches posts by text-content, as well as first and last name of post author.
+            - must include 'search' parameter in url
+                - ex: https://krab-motion.propulsion-learn.ch/backend/api/social/posts/?search=apple
+
+        - Combination: Adds pagination and search functionality together
+            - ex: https://krab-motion.propulsion-learn.ch/backend/api/social/posts/?search=apple&limit=25&offset=0
+    """
     pagination_class = LimitOffsetPagination
     queryset = Post.objects.all().order_by('-created')
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -26,15 +45,40 @@ class ListCreatePostsView(ListCreateAPIView):
         serializer.save(author=self.request.user)
 
 
-# Read update or delete one post instance
 class RetrieveUpdateDestroyPostsView(RetrieveUpdateDestroyAPIView):
+    """
+        put:
+        Update post information
+
+        - put method is not advised, see patch request
+
+        get:
+        Get one post by post ID
+
+        - Post ID must be at end of url
+
+        patch:
+        Change Post data
+
+        - Patch is the preferred method for changing data
+
+        delete:
+        Delete post of logged in user
+
+        - add post id you wish to delete at end of url
+     """
     queryset = Post.objects.all()
     serializer_class = PostsWriteSerializer
     permission_classes = [IsAuthorOrSuperuserOrReadOnly]
 
 
-# List posts from users the logged in user is following
 class ListFollowingUsersPostView(ListAPIView):
+    """
+        get:
+        Gets logged in user's list of followers
+
+        - Must be logged in to get this information
+     """
     serializer_class = PostsReadSerializer
     pagination_class = LimitOffsetPagination
 
@@ -43,8 +87,13 @@ class ListFollowingUsersPostView(ListAPIView):
         return Post.objects.filter(author__in=users).order_by("-created")
 
 
-# List posts from friends of logged in user
 class ListFriendsPostsView(ListAPIView):
+    """
+        get:
+        Gets logged in user's list of friends
+
+        - Must be logged in to get this information
+     """
     serializer_class = PostsReadSerializer
     pagination_class = LimitOffsetPagination
 
@@ -53,16 +102,32 @@ class ListFriendsPostsView(ListAPIView):
         return Post.objects.filter(author__in=users).order_by("-created")
 
 
-# Retrieve one of logged in user's posts
 class RetrieveUserPostView(ListAPIView):
+    """
+        get:
+        Gets a list of all posts created by logged in user
+
+        - Returns posts in chronological order, from newest to oldest.
+     """
     serializer_class = PostsReadSerializer
 
     def get_queryset(self):
         return Post.objects.filter(author=self.kwargs["pk"]).order_by("-created")
 
 
-# Toggle logged in user's likes on posts
 class ToggleLikes(UpdateAPIView):
+    """
+        patch:
+        Toggle logged in users likes on posts
+
+        - Note: Cannot like own posts!
+        - patch is preferred method for toggling likes
+
+        put:
+        Toggle logged in users likes on posts
+
+        - Put method is not advised, please see patch request
+     """
     queryset = Post.objects.all()
     serializer_class = PostsReadSerializer
 
@@ -82,13 +147,16 @@ class ToggleLikes(UpdateAPIView):
             return Response({'success': f'liked post {post.id}'}, status=status.HTTP_200_OK)
 
 
-# List all posts the logged in user liked
 class ListUserLikedPostsView(ListAPIView):
+    """
+        get:
+        List all posts the logged in user liked
+
+        - returns chronological list, from newest to oldest
+     """
     serializer_class = PostsReadSerializer
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         liked = self.request.user.liked_posts.all()
         return Post.objects.filter(id__in=liked).order_by("-created")
-
-
