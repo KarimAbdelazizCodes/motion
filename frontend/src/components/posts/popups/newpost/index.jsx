@@ -32,7 +32,8 @@ const Popup = props => {
         let newForm = new FormData();
         images.map(image => newForm.append('images', image));
         newForm.append('content', newPostRef.current.value);
-        newForm.append('shared_from', props.id)
+        // This logic is for post sharing. If the post is being shared, then props.id is true
+        if (props.id) newForm.append('shared_from', props.id)
 
 
         const response = await Axios.post(url, newForm, config);

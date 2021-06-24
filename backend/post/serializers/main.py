@@ -15,6 +15,7 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = ['image']
 
+
 # nested serializer
 class SharedPostSerializer(serializers.ModelSerializer):
     author = MainUserSerializer()

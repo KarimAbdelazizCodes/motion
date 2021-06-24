@@ -4,6 +4,9 @@ import TimeAgo from "react-timeago";
 import {PostWrapper} from "../styled";
 import menu from "../../../../assets/posts/menu.svg";
 
+const SharedPostWrapper = styled(PostWrapper)`
+  width: 100%;
+`
 
 const SharedPost = props => {
     const defaultAvatar = 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
@@ -11,7 +14,7 @@ const SharedPost = props => {
     const { author, content, created, images } = props.post
 
     return(
-        <PostWrapper>
+        <SharedPostWrapper>
             <div className="post-upper">
                 <div className="top-left-container">
                     <div className="left-side">
@@ -35,7 +38,7 @@ const SharedPost = props => {
                     ))}
                 </div>
             ) : null}
-        </PostWrapper>
+        </SharedPostWrapper>
     )
 }
 

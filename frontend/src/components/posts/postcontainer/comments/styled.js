@@ -93,7 +93,7 @@ export const ListComments = styled.div`
         width: 100%;
         height: 25px;
         border-radius: 35px;
-        background: lightgray;
+        background: darkgray;
         color: white;
         border: none;
         text-shadow: 2px 1px 3px rgba(0,0,0,0.52)
