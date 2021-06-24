@@ -15,10 +15,7 @@ import {TopContainer} from "../components/homepage/login/styled";
 const UserApp = () => {
     return (
         <>
-            <NavSearchContainer>
-                <NavBar />
-                <SearchBar />
-            </NavSearchContainer>
+            <NavBar />
             <Switch>
                 <Route exact path="/" component={Posts} />
                 <Route exact path="/profile" component={UserProfile} />

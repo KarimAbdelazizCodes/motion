@@ -9,8 +9,8 @@ export const BaseAvatar = styled.img`
     width: ${props => props.width || "42px"};
     object-fit: cover;
     border-radius: 50%;
-    margin-left: 4%;
-    margin-right: 4%;
+    margin-left: ${props => props.marginLeft || "4%"};
+    margin-right: ${props => props.marginRight || "4%"};
 
     :hover {
         cursor: pointer;
@@ -25,10 +25,13 @@ export const BaseAvatar = styled.img`
 const Avatar = (props) => {
     const history = useHistory();
     const location = useLocation();
-    return (
-        <BaseAvatar height={props.height} width={props.width} src={props.user ? props.user : avatar} alt={props.alt} onClick={() => location.pathname !== "/Profile" ? history.push("/Profile3") : null}/>
 
+    return (
+        <BaseAvatar height={props.height} width={props.width} src={props.user ? props.user : avatar}
+                    marginLeft={props.marginLeft} marginRight={props.marginRight} alt={props.alt}
+                    onClick={() => location.pathname !== `/${props.user_id}` ?
+                        history.push(`/${props.user_id}`) : null}/>
     )
-}
+};
 
 export default Avatar;

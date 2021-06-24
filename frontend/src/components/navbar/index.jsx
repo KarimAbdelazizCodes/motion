@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserProfileData } from '../../Axios/fetches';
+import { fetchUserProfileData, getFriendsRequests } from '../../Axios/fetches';
 
 import Logo from '../../assets/main/logo.png';
 import PostImg from '../../assets/posts/posts_logo.svg';
@@ -11,6 +11,7 @@ import BellIcon from '../../assets/navigationbar/notificationbell.svg';
 import MenuIcon from '../../assets/navigationbar/dots.svg';
 import { NakedButton } from '../../styles/Button';
 import Avatar from '../../styles/Avatar';
+import NotificationDropdown from "../layouts/notification";
 
 
 const Container = styled.div`
@@ -108,14 +109,15 @@ const ImgMenu = styled.img`
 
 const NavBar = () => {
     const myProfileData = useSelector(state => state.userData);
+    const [toggleNotification, setToggleNotification] = useState(false);
 
     const history = useHistory();
     const location = useLocation();
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(getFriendsRequests)
         if (myProfileData.length === 0) {
-            console.log("hello world")
             dispatch(fetchUserProfileData)
         }
     }, [dispatch, myProfileData]);
@@ -138,9 +140,13 @@ const NavBar = () => {
                 <NakedButton onClick={() => location.pathname !== "/findfriends" ? history.push("/findfriends") : null}>Find Friends</NakedButton>
             </SubContainer>
 
-
-            <ImgBell src={BellIcon} alt='bell logo'/>
-            <Avatar user={myProfileData.avatar}/>
+            <ImgBell src={BellIcon} alt='bell logo' onClick={() => setToggleNotification(!toggleNotification)}/>
+            {
+                toggleNotification ? (
+                    <NotificationDropdown />
+                ) : null
+            }
+            <Avatar user={myProfileData.avatar} user_id={"profile"}/>
             <ImgMenu src={MenuIcon} alt='menu logo'/>
         </Container>
     )

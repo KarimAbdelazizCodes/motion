@@ -14,6 +14,7 @@ export const fetchUserProfileData = async dispatch => {
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     };
+    // fetch user's data
     const url = 'users/me/';
     const response = await Axios.get(url, config);
     dispatch(f.userData(response.data));
@@ -54,7 +55,7 @@ export const getFriendsRequests = async dispatch => {
     };
     const url = 'social/friends/requests/';
     const response = await Axios.get(url, config);
-    dispatch(f.friendReqs(response.data.results));
+    dispatch(f.friendReqs(response.data));
 };
 
 export const getUsers = async dispatch => {
