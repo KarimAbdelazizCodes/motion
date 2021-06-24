@@ -10,12 +10,17 @@ import EditPost from '../postcontainer/editpost'
 import { useDispatch } from 'react-redux'
 import img from '../../../assets/img.png';
 import Comments from '../postcontainer/comments'
+import SharedPost from '../postcontainer/shared_posts'
+import Popup from "../popups/newpost";
 
 
 const Post = props => {
+    const [popup, setPopup] = useState(false);
     const dispatch = useDispatch();
     // destructuring post prop
-    const { author, images, amount_of_likes, content, created,  logged_in_user_liked, is_from_logged_in_user, id } = props.post;
+    const { author, images, amount_of_likes, content, created,
+        logged_in_user_liked, is_from_logged_in_user, id, shared_from } = props.post;
+
     const [editToggle, setEditToggle] = useState(false)
     const [totalLikes, setTotalLikes] = useState(amount_of_likes)
     const [userLikes, setUserLikes] = useState(logged_in_user_liked)
@@ -46,6 +51,7 @@ const Post = props => {
     const defaultAvatar = 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
     return (
         <PostWrapper>
+            {/*upper section of a post, where user profile image, name and post timestamp are shown*/}
             <div className="post-upper">
                 <div className="top-left-container">
                     <div className="left-side">
@@ -67,6 +73,8 @@ const Post = props => {
                 </div>
             </div>
             {editToggle ? <EditPost id={id} close={setEditToggle}/> : null}
+
+            {/*// Middle section, where post content is shown*/}
             <div className="userpost">
                 <p>{content}</p>
             </div>
@@ -77,6 +85,9 @@ const Post = props => {
                     ))}
                 </div>
             ) : null}
+            {shared_from ? <SharedPost post={shared_from}/> : null}
+
+            {/* bottom section of a post, where like and share buttons are */}
             <div className="likes">
                 <div className="like-share">
                     <div className="interactive" style={{ 'margin-right': '20px' }}>
@@ -87,9 +98,9 @@ const Post = props => {
                     </div>
                     <div className="interactive">
                         <img src={share} alt="share" />
-                        <button className="post-interact" style={{ 'margin-left': '10px' }}>
-                            Share
-                        </button>
+                        <button className="post-interact" style={{ 'margin-left': '10px' }}
+                                onClick={() => setPopup(!popup)}> Share </button>
+                        <Popup toggle={popup} close={setPopup} id={id}/>
                     </div>
                 </div>
                 <div className="like-counter">

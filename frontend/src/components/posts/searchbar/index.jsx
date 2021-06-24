@@ -21,7 +21,7 @@ const SearchBar = props => {
             console.log(response);
             const action = {
                 type: 'SEARCH_RESULTS',
-                payload: response.data.results
+                payload: response.data
             }
             dispatch(action)
             props.history.push('/search-results')

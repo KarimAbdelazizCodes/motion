@@ -51,10 +51,10 @@ export const ListComments = styled.div`
         display: flex;
         background: ${props => props.theme.profileBackground};
         box-shadow: ${props => props.theme.boxShadow};
-        border-radius: 35px;
+        border-radius: 15px;
         width: auto;
         flex-direction: column;
-        padding: 10px;
+        padding: 15px;
         margin-left: 10px;
         
         .info {
@@ -90,11 +90,14 @@ export const ListComments = styled.div`
       justify-content: center;
       width: 100%;
       button {
-        width: 280px;
+        width: 100%;
+        height: 25px;
         border-radius: 35px;
-        background: ${props => props.theme.linearGradient};
+        background: lightgray;
         color: white;
         border: none;
+        text-shadow: 2px 1px 3px rgba(0,0,0,0.52)
+;
         
         :active {
           transform: translateY(0.5px);
