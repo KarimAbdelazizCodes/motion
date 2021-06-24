@@ -10,12 +10,17 @@ import { FollowedPosts } from '../components/posts/Followedposts'
 import SearchResults from '../components/posts/searchResults';
 import {TopContainer} from "../components/homepage/login/styled";
 
+import styled from 'styled-components';
 
+const SpaceHolderForNavbar = styled.div`
+    height: 65px;
+`
 
 const UserApp = () => {
     return (
         <>
             <NavBar />
+            <SpaceHolderForNavbar />
             <Switch>
                 <Route exact path="/" component={Posts} />
                 <Route exact path="/profile" component={UserProfile} />

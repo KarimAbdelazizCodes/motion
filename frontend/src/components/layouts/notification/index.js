@@ -51,13 +51,16 @@ const RequesterName = styled.p`
     height: 100%;
     font-size: ${props => props.theme.small};
     line-height: 30px;
+    
+    :hover {
+        cursor: pointer;
+    }
 `
 
 
 const Icon = styled.img`
     height: ${props => props.height || "20px"};
     width: auto;
-    background-color: white;
     
     margin-top: ${props => props.marginTop || "5px"};
     margin-left: ${props => props.marginLeft || "4%"};
