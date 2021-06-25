@@ -43,7 +43,7 @@ export const fetchLikedPosts = async dispatch => {
     const url = 'social/posts/likes/';
     try {
         const response = await Axios.get(url, config);
-        dispatch(f.liked(response.data.results));
+        dispatch(f.liked(response.data));
     } catch (e) {
         console.log(e);
     }
@@ -76,7 +76,7 @@ export const fetchFriendPosts = async dispatch => {
     try {
         const response = await Axios.get(url, config);
         console.log(response)
-        dispatch(f.friendPosts(response.data.results));
+        dispatch(f.friendPosts(response.data));
     } catch (e) {
         console.log(e);
     }
@@ -90,7 +90,7 @@ export const fetchFollowed = async dispatch => {
     const url = 'social/posts/following/';
     try {
         const response = await Axios.get(url, config);
-        dispatch(f.followed(response.data.results));
+        dispatch(f.followed(response.data));
     } catch (e) {
         console.log(e);
     }
