@@ -11,6 +11,7 @@ import Post from './postcontainer';
 import send from '../../assets/posts/send.svg';
 import { fetchPosts, fetchUserdata } from '../../Axios/fetches';
 import SearchBar from '../posts/searchbar'
+import Avatar from "../../styles/Avatar";
 
 const Posts = () => {
     const [popup, setPopup] = useState(false);
@@ -32,7 +33,7 @@ const Posts = () => {
                 <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
                     <NewPost>
                         <div className='newpost-right'>
-                            <img className='user-avatar' src={userData.avatar} alt='profile pic' />
+                            <Avatar user={userData.avatar} user_id={userData.id} alt='profile pic' width={'55px'} height={'55px'}/>
                             <p onClick={() => setPopup(!popup)}>{`What's on your mind, ${userData['first_name']}?`}</p>
                         </div>
                         <ButtonContainer>

@@ -7,16 +7,18 @@ import TimeAgo from 'react-timeago';
 import Axios from '../../../Axios';
 import { useState, useRef } from 'react'
 import EditPost from '../postcontainer/editpost'
-import { useDispatch } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import img from '../../../assets/img.png';
 import Comments from '../postcontainer/comments'
 import SharedPost from '../postcontainer/shared_posts'
 import Popup from "../popups/newpost";
+import Avatar from "../../../styles/Avatar";
 
 
 const Post = props => {
     const [popup, setPopup] = useState(false);
     const dispatch = useDispatch();
+    const userData = useSelector(state => state.userData);
     // destructuring post prop
     const { author, images, amount_of_likes, content, created,
         logged_in_user_liked, is_from_logged_in_user, id, shared_from, amount_of_comments} = props.post;
@@ -55,7 +57,7 @@ const Post = props => {
             <div className="post-upper">
                 <div className="top-left-container">
                     <div className="left-side">
-                        <img className="avatar" src={author.avatar ? author.avatar : defaultAvatar} alt="profile pic" />
+                        <Avatar user={author.avatar} src={author.avatar ? author.avatar : defaultAvatar} alt="profile pic" />
                     </div>
                     <div className="left-side" style={{ 'marginLeft': '20px' }}>
                         <span>
