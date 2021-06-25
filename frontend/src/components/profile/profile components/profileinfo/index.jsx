@@ -50,31 +50,31 @@ const ProfileInfo = () => {
                     </div>
                     <div className="counters">
                         <div>
-                            <button>
+                            <button onClick={() => history.push("/profile")}>
                                 <span id="amount">{userInfo['amount_of_posts']}</span>
                                 <span id="text">Posts</span>
                             </button>
                         </div>
                         <div>
-                            <button>
+                            <button onClick={() => history.push("/profile/likes")}>
                                 <span id="amount">{userInfo['amount_of_likes']}</span>
                                 <span id="text">Likes</span>
                             </button>
                         </div>
                         <div>
-                            <button>
+                            <button onClick={() => history.push("/profile/friends")}>
                                 <span id="amount">{userInfo['amount_of_friends']}</span>
                                 <span id="text">Friends</span>
                             </button>
                         </div>
                         <div>
-                            <button>
+                            <button onClick={() => history.push("/profile/followers")}>
                                 <span id="amount">{userInfo['amount_of_followers']}</span>
                                 <span id="text">Followers</span>
                             </button>
                         </div>
                         <div>
-                            <button>
+                            <button onClick={() => history.push("/profile/following")}>
                                 <span id="amount">{userInfo['amount_of_following']}</span>
                                 <span id="text">Following</span>
                             </button>

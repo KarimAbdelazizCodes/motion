@@ -50,7 +50,6 @@ const EditProfile = (props) => {
         hobbies: userInfo.hobbies,
     };
 
-    console.log(avatarRef);
     // sends a PATCH request to update user details and avatar/banner
     const UpdateDetails = async () => {
         const body = {
@@ -71,7 +70,6 @@ const EditProfile = (props) => {
             newForm.append('avatar', avatarRef.current.files[0]);
             const responseTwo = await Axios.patch(url, newForm, config);
             console.log(responseTwo);
-            // avatarRef.current.value = [];
         }
 
     setEditavatar(false);

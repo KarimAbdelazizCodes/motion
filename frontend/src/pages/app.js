@@ -9,6 +9,11 @@ import { FriendPosts } from '../components/posts/friendposts'
 import { FollowedPosts } from '../components/posts/Followedposts'
 import SearchResults from '../components/posts/searchResults';
 import EditProfilePage from "../components/profile/pages/edit profile page";
+import LikesProfilePage from "../components/profile/pages/Likes_profile";
+import FriendsProfile from "../components/profile/pages/friends_profile/index";
+import FollowersProfile from "../components/profile/pages/followers_profile";
+import FollowingProfile from "../components/profile/pages/following_profile";
+
 
 const UserApp = () => {
     return (
@@ -17,6 +22,10 @@ const UserApp = () => {
             <Switch>
                 <Route exact path="/" component={Posts} />
                 <Route exact path="/profile" component={UserProfilePage} />
+                <Route exact path="/profile/likes" component={LikesProfilePage} />
+                <Route exact path="/profile/friends" component={FriendsProfile} />
+                <Route exact path="/profile/followers" component={FollowersProfile} />
+                <Route exact path="/profile/following" component={FollowingProfile} />
                 <Route exact path="/editprofile" component={EditProfilePage} />
                 <Route exact path="/findfriends" component={FindFriends} />
                 <Route exact path='/search-results' component={ SearchResults } />
