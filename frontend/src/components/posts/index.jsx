@@ -70,7 +70,7 @@ const Posts = () => {
 
     return (
         <PostsHome>
-            <SearchBar></SearchBar>
+            <SearchBar/>
             <PostContainer>
                 <Masonry breakpointCols={2} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
                     <NewPost>

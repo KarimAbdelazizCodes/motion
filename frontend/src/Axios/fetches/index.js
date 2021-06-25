@@ -20,7 +20,7 @@ export const fetchUserdata = async dispatch => {
     dispatch(f.userData(response.data));
 
     //fetch user posts
-    const urlTwo = `social/posts/user/${response.data.id}/`;
+    const urlTwo = `social/posts/user/${response.data.id}/?limit=25&offset=0`;
     const responseTwo = await Axios.get(urlTwo, config);
     dispatch(f.userPosts(responseTwo.data.results));
 };
