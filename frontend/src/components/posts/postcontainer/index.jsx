@@ -57,7 +57,7 @@ const Post = props => {
                     <div className="left-side">
                         <img className="avatar" src={author.avatar ? author.avatar : defaultAvatar} alt="profile pic" />
                     </div>
-                    <div className="left-side" style={{ 'margin-left': '20px' }}>
+                    <div className="left-side" style={{ 'marginLeft': '20px' }}>
                         <span>
                             {author['first_name']} {author['last_name']}
                         </span>
@@ -90,15 +90,15 @@ const Post = props => {
             {/* bottom section of a post, where like and share buttons are */}
             <div className="likes">
                 <div className="like-share">
-                    <div className="interactive" style={{ 'margin-right': '20px' }}>
+                    <div className="interactive" style={{ 'marginRight': '20px' }}>
                         <img src={userLikes ? likedheart : heart} alt="heart" />
-                        <button onClick={() => likePost(id)} className="post-interact" style={{ 'margin-left': '10px' }}>
+                        <button onClick={() => likePost(id)} className="post-interact" style={{ 'marginLeft': '10px' }}>
                             Like
                         </button>
                     </div>
                     <div className="interactive">
                         <img src={share} alt="share" />
-                        <button className="post-interact" style={{ 'margin-left': '10px' }}
+                        <button className="post-interact" style={{ 'marginLeft': '10px' }}
                                 onClick={() => setPopup(!popup)}> Share </button>
                         <Popup toggle={popup} close={setPopup} id={id}/>
                     </div>
