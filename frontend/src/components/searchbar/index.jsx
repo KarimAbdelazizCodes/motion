@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { NakedButton } from '../../styles/Button';
 
 import SearchIcon from '../../assets/posts/search.svg';
+import { useLocation } from "react-router-dom";
 
 
 const Container = styled.div`
@@ -51,17 +52,21 @@ const SearchInput = styled.input`
 const SearchBarNakedButton = styled(NakedButton)`
     color: grey;
     height: 100%;
+    
+    font-weight: ${props => props.fontWeight || "normal"};
 `
 
 
 const SearchBar = () => {
+    const location = useLocation();
+
     return (
         <Container>
             <SubContainer>
                 <SearchImg src={SearchIcon} alt='Search Icon'/>
                 <SearchInput type="text" placeholder="Search posts..."/>
             </SubContainer>
-            <SearchBarNakedButton marginLeft="auto">Liked</SearchBarNakedButton>
+            <SearchBarNakedButton marginLeft="auto" fontWeight={location.pathname === "/liked-posts" ? "bold" : "normal"}>Liked</SearchBarNakedButton>
             <SearchBarNakedButton marginLeft="4%">Friends</SearchBarNakedButton>
             <SearchBarNakedButton marginLeft="4%">Follow</SearchBarNakedButton>
         </Container>
