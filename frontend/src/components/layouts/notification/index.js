@@ -5,8 +5,10 @@ import {useDispatch, useSelector} from "react-redux";
 import Avatar from '../../../styles/Avatar';
 import AcceptIcon from '../../../assets/navigationbar/accept_icon.svg';
 import RejectIcon from '../../../assets/navigationbar/reject_icon.svg';
-import PendingIcon from '../../../assets/navigationbar/pending_icon.svg';
 import Axios from "../../../Axios";
+
+// import PendingIcon from '../../../assets/navigationbar/pending_icon.svg';
+// <Icon marginLeft={"auto"} marginTop={"3.5px"} height={"23px"} cursor={"auto"} transform={"none"} src={PendingIcon} alt='pending icon'/>
 
 
 const Container = styled.div`
@@ -144,8 +146,7 @@ const NotificationDropdown = (props) => {
                     return <UserContainer key={request.id}>
                         <Avatar user={avatar} height={"30px"} width={"30px"}/>
                         <RequesterName>{username}</RequesterName>
-                        <Icon marginLeft={"auto"} marginTop={"3.5px"} height={"23px"} cursor={"auto"} transform={"none"} src={PendingIcon} alt='pending icon'/>
-                        <Icon marginLeft={"0px"} src={RejectIcon} alt='reject icon' onClick={() => submitRequest(request.id, "D")}/>
+                        <Icon marginLeft={"auto"} src={RejectIcon} alt='reject icon' onClick={() => submitRequest(request.id, "D")}/>
                     </UserContainer>
                 })
             }

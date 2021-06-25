@@ -53,6 +53,7 @@ const SearchInput = styled.input`
 const SearchBarNakedButton = styled(NakedButton)`
     color: grey;
     height: 100%;
+    font-weight: ${props => props.fontWeight || "normal"};
 `
 
 
@@ -91,11 +92,14 @@ const SearchBar = props => {
                 onKeyDown={e => e.key === 'Enter' ? FindPost(searchText) : null} value={searchText} />
             </SubContainer>
                 <SearchBarNakedButton marginLeft="auto"
-                                      onClick={() => location.pathname !== "/liked-posts" ? history.push("/liked-posts") : null}>Liked</SearchBarNakedButton>
+                                      onClick={() => location.pathname !== "/liked-posts" ? history.push("/liked-posts") : null}
+                                      fontWeight={location.pathname === "/liked-posts" ? "bold" : "normal"}>Liked</SearchBarNakedButton>
                 <SearchBarNakedButton marginLeft="4%"
-                                      onClick={() => location.pathname !== "/friends-posts" ? history.push("/friends-posts") : null}>Friends</SearchBarNakedButton>
+                                      onClick={() => location.pathname !== "/friends-posts" ? history.push("/friends-posts") : null}
+                                      fontWeight={location.pathname === "/friends-posts" ? "bold" : "normal"}>Friends</SearchBarNakedButton>
                 <SearchBarNakedButton marginLeft="4%"
-                                      onClick={() => location.pathname !== "/followed-posts" ? history.push("/followed-posts") : null}>Followed</SearchBarNakedButton>
+                                      onClick={() => location.pathname !== "/followed-posts" ? history.push("/followed-posts") : null}
+                                      fontWeight={location.pathname === "/followed-posts" ? "bold" : "normal"}>Followed</SearchBarNakedButton>
         </Container>
     )
 }

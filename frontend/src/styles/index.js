@@ -15,6 +15,10 @@ export const GlobalStyle = createGlobalStyle`
             cursor: pointer;
         }
     }
+    
+    body {
+        background-color: #F2F2F2;
+    }
 `;
 
 export const defaultTheme = {
