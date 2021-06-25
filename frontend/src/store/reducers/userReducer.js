@@ -30,6 +30,8 @@ export const userReducer = (state = initialState, action) => {
             return { ...state, userList: action.payload };
         case 'GET_FRIEND_REQUESTS':
             return { ...state, friendsRequests: action.payload };
+        case 'REMOVE_FRIEND_REQUEST':
+            return { ...state, friendsRequests: state.friendsRequests.filter(request => request.id !== action.payload.id)}
         case 'SEARCH_RESULTS':
             return { ...state, searchResult: action.payload };
         case 'LIKED_POSTS':
