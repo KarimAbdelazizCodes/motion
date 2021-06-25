@@ -54,7 +54,9 @@ const UserCard = props => {
 
             <div className="lower">
                 <p>{about}</p>
-                {hobbies ? hobbies.map(hobby => <span>{hobby}</span>) : null}
+                <div className="hobbies">
+                {hobbies ? hobbies.map(hobby => <span className="hobby">{hobby}</span>) : null}
+                </div>
             </div>
         </Card>
     )
