@@ -6,6 +6,8 @@ import menu from "../../../../assets/posts/menu.svg";
 
 const SharedPostWrapper = styled(PostWrapper)`
   width: 100%;
+  border-left: 1px solid lightgray;
+  border-radius: 0;
 `
 
 const SharedPost = props => {

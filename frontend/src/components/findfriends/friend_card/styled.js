@@ -45,7 +45,6 @@ export const BaseButton = styled.button`
 
 export const FriendButton = styled(BaseButton)`
   background: ${props => props.theme.whiteTransparent};
-
 `
 
 export const FollowButton = styled(BaseButton)`
