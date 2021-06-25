@@ -5,6 +5,7 @@ import {ListComments, NewComment} from "./styled";
 import { useDispatch, useSelector} from "react-redux";
 import {AllComments, newComment} from "../../../../store/actionCreators";
 import TimeAgo from "react-timeago";
+import Avatar from "../../../../styles/Avatar";
 
 const Comments = props => {
     const [showComments, setToggle] = useState(false)
@@ -59,7 +60,7 @@ const Comments = props => {
                         <>
                         <div>
                             <div className="text-wrapper">
-                                <img className="profile-pic" src={comment.author.avatar} alt="pp"/>
+                                <Avatar className="profile-pic" user={comment.author.avatar} marginRight={'3px'} alt="pp"/>
                                 <div className="comment-body">
                                     <div className="info">
                                         <span>{comment.author.first_name} {comment.author.last_name}</span>
