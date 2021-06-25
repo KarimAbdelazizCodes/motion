@@ -10,7 +10,8 @@ const initialState = {
     searchResult: [],
     likedPosts: [],
     friendPosts: [],
-    followedPosts: []
+    followedPosts: [],
+    postComments: []
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -41,6 +42,10 @@ export const userReducer = (state = initialState, action) => {
             return { ...state, friendPosts: action.payload};
         case 'FOLLOW_POSTS':
             return { ...state, followedPosts: action.payload};
+        case 'ALL_COMMENTS':
+            return { ...state, postComments: action.payload};
+        case 'NEW_COMMENT':
+            return { ...state, postComments: [...state.postComments, action.payload]};
         default:
             return state;
     }

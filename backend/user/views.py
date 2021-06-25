@@ -11,11 +11,13 @@ User = get_user_model()
 
 
 class ListUserView(ListAPIView):
-    queryset = User.objects.all()
     pagination_class = LimitOffsetPagination
     serializer_class = MainUserSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['username']
+
+    def get_queryset(self):
+        return User.objects.exclude(id=self.request.user.id)
 
 
 class ListUserFollowers(ListAPIView):
