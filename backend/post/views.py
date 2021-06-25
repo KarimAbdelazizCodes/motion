@@ -43,7 +43,11 @@ class ListCreatePostsView(ListCreateAPIView):
         return PostsReadSerializer
 
     def perform_create(self, serializer):
-        instance = serializer.save(author=self.request.user)
+        try:
+            instance = serializer.save(author=self.request.user, shared_from_id=self.request.data['shared_from'])
+        except KeyError:
+            instance = serializer.save(author=self.request.user)
+
         for img in self.request.FILES.getlist('images'):
             Image.objects.create(image=img, post=instance)
 

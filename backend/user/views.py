@@ -32,6 +32,9 @@ class ListUserView(ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'first_name', 'last_name', 'job', 'email']
 
+    def get_queryset(self):
+        return User.objects.exclude(id=self.request.user.id)
+
 
 class ListUserFollowers(ListAPIView):
     """

@@ -5,15 +5,21 @@ import share from '../../../assets/posts/share.svg';
 import menu from '../../../assets/posts/menu.svg';
 import TimeAgo from 'react-timeago';
 import Axios from '../../../Axios';
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import EditPost from '../postcontainer/editpost'
 import { useDispatch } from 'react-redux'
+import img from '../../../assets/img.png';
+import Comments from '../postcontainer/comments'
+import SharedPost from '../postcontainer/shared_posts'
+import Popup from "../popups/newpost";
 
 
 const Post = props => {
+    const [popup, setPopup] = useState(false);
     const dispatch = useDispatch();
-    // destructuring post
-    const { author, images, amount_of_likes, content, created,  logged_in_user_liked, is_from_logged_in_user, id } = props.post;
+    // destructuring post prop
+    const { author, images, amount_of_likes, content, created,
+        logged_in_user_liked, is_from_logged_in_user, id, shared_from, amount_of_comments} = props.post;
 
     const [editToggle, setEditToggle] = useState(false)
     const [totalLikes, setTotalLikes] = useState(amount_of_likes)
@@ -25,7 +31,7 @@ const Post = props => {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         };
         try {
-            const response = await Axios.post(url, null, config);
+            const response = await Axios.patch(url, null, config);
             console.log(response);
             userLikes ? setTotalLikes(totalLikes-1) : setTotalLikes(totalLikes+1);
             setUserLikes(!userLikes)
@@ -45,6 +51,7 @@ const Post = props => {
     const defaultAvatar = 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
     return (
         <PostWrapper>
+            {/*upper section of a post, where user profile image, name and post timestamp are shown*/}
             <div className="post-upper">
                 <div className="top-left-container">
                     <div className="left-side">
@@ -66,6 +73,8 @@ const Post = props => {
                 </div>
             </div>
             {editToggle ? <EditPost id={id} close={setEditToggle}/> : null}
+
+            {/*// Middle section, where post content is shown*/}
             <div className="userpost">
                 <p>{content}</p>
             </div>
@@ -76,6 +85,9 @@ const Post = props => {
                     ))}
                 </div>
             ) : null}
+            {shared_from ? <SharedPost post={shared_from}/> : null}
+
+            {/* bottom section of a post, where like and share buttons are */}
             <div className="likes">
                 <div className="like-share">
                     <div className="interactive" style={{ 'marginRight': '20px' }}>
@@ -86,9 +98,9 @@ const Post = props => {
                     </div>
                     <div className="interactive">
                         <img src={share} alt="share" />
-                        <button className="post-interact" style={{ 'marginLeft': '10px' }}>
-                            Share
-                        </button>
+                        <button className="post-interact" style={{ 'marginLeft': '10px' }}
+                                onClick={() => setPopup(!popup)}> Share </button>
+                        <Popup toggle={popup} close={setPopup} id={id}/>
                     </div>
                 </div>
                 <div className="like-counter">
@@ -97,6 +109,7 @@ const Post = props => {
                     </span>
                 </div>
             </div>
+            <Comments id={id}/>
         </PostWrapper>
     );
 };

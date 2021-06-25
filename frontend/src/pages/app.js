@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import Posts from '../components/posts';
 import UserProfilePage from '../components/profile/pages/profile page';
-import Navigation from '../components/navigation/';
+import NavBar from '../components/navbar/';
 import { Switch, Route } from 'react-router-dom';
 import { FindFriends } from '../components/findfriends';
 import { LikedPosts } from '../components/posts/likedposts'
@@ -14,11 +14,19 @@ import FriendsProfile from "../components/profile/pages/friends_profile/index";
 import FollowersProfile from "../components/profile/pages/followers_profile";
 import FollowingProfile from "../components/profile/pages/following_profile";
 
+import {TopContainer} from "../components/homepage/login/styled";
+
+import styled from 'styled-components';
+
+const SpaceHolderForNavbar = styled.div`
+    height: 65px;
+`
 
 const UserApp = () => {
     return (
         <>
-            <Navigation />
+            <NavBar />
+            <SpaceHolderForNavbar />
             <Switch>
                 <Route exact path="/" component={Posts} />
                 <Route exact path="/profile" component={UserProfilePage} />
