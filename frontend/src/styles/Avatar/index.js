@@ -30,7 +30,7 @@ const Avatar = (props) => {
         <BaseAvatar height={props.height} width={props.width} src={props.user ? props.user : avatar}
                     marginLeft={props.marginLeft} marginRight={props.marginRight} alt={props.alt}
                     onClick={() => location.pathname !== `/${props.user_id}` ?
-                        history.push(`/${props.user_id}`) : null}/>
+                        history.push(`/profile`) : null}/>
     )
 };
 
