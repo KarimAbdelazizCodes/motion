@@ -6,12 +6,15 @@ export const Card = styled.div`
   align-items: center;
   flex-direction: column;
   
-  .upper, .middle {
+  .upper, .middle, .lower {
     display: flex;
     align-items: center;
   }
-  
-  .upper {
+  .lower {
+    height: 100px;
+    justify-content: space-between;
+  }
+  .upper, .lower {
     flex-direction: column;
     
     .name {
@@ -22,6 +25,17 @@ export const Card = styled.div`
     
     .location {
       font-size: 14px;
+    }
+    
+    .hobbies {
+      margin-top: 10px;
+      
+      .hobby {
+        background: lightgray;
+        margin: 5px;
+        padding: 5px;
+        border-radius: 25px;
+      }
     }
     
   }
