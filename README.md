@@ -6,4 +6,4 @@ Motion is a social network where users can make new friendships, follow any user
 - The Backend is built using Python, Django Rest Framework and PostgreSQL
 - Docker, Docker-compose, Gitlab CI/CD and Nginx.
 
-### The project is still not 100% completed, as the frontend still requires some re-works.
+##### The project is still not 100% completed, as the frontend still requires some re-works.
